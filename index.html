@@ -6,6 +6,108 @@
     <title>Tuanjie WebGL Player | Escape_from_the_Earth</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #0a0f2a, #0b1a3a);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      #tuanjie-container {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 20px 35px rgba(0,0,0,0.5);
+        background: #000;
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 1200px;
+        border-radius: 16px;
+      }
+
+      #tuanjie-footer {
+        position: absolute;
+        bottom: 10px;
+        left: 20px;
+        right: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: rgba(255,255,255,0.7);
+        font-size: 14px;
+        background: rgba(0,0,0,0.5);
+        padding: 8px 16px;
+        border-radius: 24px;
+        backdrop-filter: blur(4px);
+        pointer-events: none;
+      }
+
+      #tuanjie-fullscreen-button {
+        pointer-events: auto;
+        cursor: pointer;
+        background: rgba(255,255,255,0.2);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+      }
+      #tuanjie-fullscreen-button:hover {
+        background: rgba(255,255,255,0.4);
+      }
+      #tuanjie-fullscreen-button::after {
+        content: "⛶";
+        font-size: 20px;
+        color: white;
+      }
+
+      #tuanjie-loading-bar {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 300px;
+      }
+      #tuanjie-progress-bar-empty {
+        background: rgba(255,255,255,0.3);
+        border-radius: 10px;
+        height: 8px;
+        overflow: hidden;
+      }
+      #tuanjie-progress-bar-full {
+        background: #4caf50;
+        width: 0%;
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.2s;
+      }
+      #tuanjie-logo {
+        display: none;
+      }
+      #tuanjie-webgl-logo {
+        opacity: 0.6;
+      }
+      #tuanjie-build-title {
+        font-weight: bold;
+      }
+      .tuanjie-desktop {
+        width: auto;
+        height: auto;
+        display: inline-block;
+      }
+    </style>
   </head>
   <body>
     <div id="tuanjie-container" class="tuanjie-desktop">
