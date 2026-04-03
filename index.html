@@ -6,175 +6,23 @@
     <title>Tuanjie WebGL Player | Escape_from_the_Earth</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-    <style>
-      /* 整体布局：垂直居中，底部留白 */
-      body {
-        margin: 0;
-        padding: 20px;
-        background: linear-gradient(135deg, #0a0f2a, #0b1a3a);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        font-family: 'Segoe UI', system-ui, sans-serif;
-      }
-
-      /* 游戏容器：画布带圆角和阴影 */
-      #tuanjie-container {
-        background: black;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 20px 35px rgba(0,0,0,0.5);
-        line-height: 0;  /* 消除 inline 间隙 */
-      }
-
-      canvas {
-        display: block;
-        width: 100%;
-        height: auto;
-      }
-
-      /* 底部工具栏：宽度与画布一致，美观居下 */
-      #tuanjie-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 1000px;           /* 与 canvas 宽度一致 */
-        max-width: 100%;         /* 移动端自适应 */
-        margin-top: 16px;
-        padding: 8px 20px;
-        background: rgba(0,0,0,0.6);
-        backdrop-filter: blur(4px);
-        border-radius: 40px;
-        box-sizing: border-box;
-        color: rgba(255,255,255,0.8);
-        font-size: 14px;
-      }
-
-      /* 全屏按钮样式（保持可点） */
-      #tuanjie-fullscreen-button {
-        cursor: pointer;
-        background: rgba(255,255,255,0.2);
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: 0.2s;
-      }
-      #tuanjie-fullscreen-button:hover {
-        background: rgba(255,255,255,0.4);
-      }
-      #tuanjie-fullscreen-button::after {
-        content: "⛶";
-        font-size: 20px;
-        color: white;
-      }
-
-      /* 加载进度条样式（保留原有功能） */
-      #tuanjie-loading-bar {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 300px;
-        text-align: center;
-      }
-      #tuanjie-progress-bar-empty {
-        background: rgba(255,255,255,0.3);
-        border-radius: 10px;
-        height: 8px;
-      }
-      #tuanjie-progress-bar-full {
-        background: #4caf50;
-        width: 0%;
-        height: 100%;
-        border-radius: 10px;
-      }
-
-      /* 隐藏不需要的元素
-      #tuanjie-logo, #tuanjie-webgl-logo {
-        display: none;
-      } */
-
-      /* 移动端适配 */
-      @media (max-width: 1000px) {
-        #tuanjie-footer {
-          width: calc(100% - 40px);
-          margin-top: 12px;
-          padding: 6px 16px;
-        }
-        body {
-          padding: 12px;
-        }
-      }
-      .game-rules {
-        background: rgba(0,0,0,0.7);
-        color: white;
-        border-radius: 16px;
-        padding: 12px 20px;
-        margin-bottom: 20px;
-        backdrop-filter: blur(8px);
-        font-size: 14px;
-        max-width: 1000px;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .game-rules h3 {
-        margin: 0 0 8px 0;
-        font-size: 18px;
-      }
-      .game-rules ul {
-        margin: 0;
-        padding-left: 20px;
-      }
-      .game-rules li {
-        margin: 4px 0;
-        line-height: 1.4;
-      }
-      kbd {
-        background: #333;
-        border-radius: 4px;
-        padding: 2px 6px;
-        font-family: monospace;
-        font-size: 0.9em;
-        box-shadow: 0 1px 0 rgba(255,255,255,0.2);
-        margin: 0 2px;
-      }
-    </style>
   </head>
   <body>
-    <div style="display: flex; gap: 20px; align-items: flex-start;"></div>
-      <div id="tuanjie-container" class="tuanjie-desktop">
-        <div class="game-rules">
-          <h3>📜 游戏规则</h3>
-          <ul>
-            <li>🎯 你无法主动跳跃，必须抛射<strong>支点</strong>并利用<strong>对称跳跃</strong>移动。</li>
-            <li>🖱️ <strong>鼠标瞄准</strong> → 按 <kbd>E</kbd> / <kbd>空格</kbd> 抛射支点（消耗1个支点）。</li>
-            <li>🪄 支点飞行中或落地后0.5秒内，按 <kbd>W</kbd> / <kbd>R</kbd> 进行<strong>对称跳跃</strong>（以支点为中心瞬间镜像移动）。</li>
-            <li>❤️ 触碰尖刺或掉落深渊会扣血，生命归零则本关重置。</li>
-            <li>🚪 每个关卡需要跳入上方的<strong>传送门</strong>才能进入下一关。</li>
-            <li>📦 拾取<strong>支点包</strong>补充支点数量，<strong>生命水晶</strong>恢复生命。</li>
-            <li>✨ <strong>简单模式</strong>会显示抛物线辅助线，<strong>普通模式</strong>无辅助线且无支点时倒计时重置关卡。</li>
-          </ul>
+    <div id="tuanjie-container" class="tuanjie-desktop">
+      <canvas id="tuanjie-canvas" width=1000 height=750 tabindex="-1"></canvas>
+      <div id="tuanjie-loading-bar">
+        <div id="tuanjie-logo"></div>
+        <div id="tuanjie-progress-bar-empty">
+          <div id="tuanjie-progress-bar-full"></div>
         </div>
-        <canvas id="tuanjie-canvas" width=1000 height=750 tabindex="-1"></canvas>
-        <div id="tuanjie-loading-bar">
-          <div id="tuanjie-logo"></div>
-          <div id="tuanjie-progress-bar-empty">
-            <div id="tuanjie-progress-bar-full"></div>
-          </div>
-        </div>
-        <div id="tuanjie-warning"> </div>
       </div>
+      <div id="tuanjie-warning"> </div>
       <div id="tuanjie-footer">
         <div id="tuanjie-webgl-logo"></div>
         <div id="tuanjie-fullscreen-button"></div>
         <div id="tuanjie-build-title">Escape_from_the_Earth</div>
       </div>
-    
+    </div>
 	
 	
     <script>
@@ -211,11 +59,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Pak.loader.js";
+      var loaderUrl = buildUrl + "/BuildWebglwithAnim.loader.js";
       var config = {
-        dataUrl: buildUrl + "/Pak.data.unityweb",
-        frameworkUrl: buildUrl + "/Pak.framework.js.unityweb",
-        codeUrl: buildUrl + "/Pak.wasm.unityweb",
+        dataUrl: buildUrl + "/BuildWebglwithAnim.data.unityweb",
+        frameworkUrl: buildUrl + "/BuildWebglwithAnim.framework.js.unityweb",
+        codeUrl: buildUrl + "/BuildWebglwithAnim.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "GameObject",
         productName: "Escape_from_the_Earth",
